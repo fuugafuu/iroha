@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>いろは よさこいチーム</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    .notice-box { background: #ffe39c; border-radius: 16px; margin-bottom: 1.5em; padding: 1em 1.2em; box-shadow: 0 2px 12px #f8c02e44;}
+    .notice-title { font-weight: bold; font-size: 1.13em; margin-bottom:0.2em;}
+    .notice-date { font-size:0.95em; color: #c46000; margin-top:0.15em;}
+    .notice-controls { text-align:center; margin:0.5em 0; }
+    .notice-btn { background: #f47920; color:#fff; border:none; border-radius:7px; padding:0.4em 1em; margin:0 0.7em; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>いろは よさこいチーム</h1>
+  </header>
+  <main>
+    <section>
+      <h2>お知らせ</h2>
+      <div id="notice-view" class="notice-box">読み込み中...</div>
+      <div class="notice-controls">
+        <button class="notice-btn" id="notice-prev">前へ</button>
+        <span id="notice-count"></span>
+        <button class="notice-btn" id="notice-next">次へ</button>
+      </div>
+    </section>
+    <section>
+      <h2>管理者用</h2>
+      <div id="pw-area">
+        <input type="password" id="pw-input" placeholder="管理者パスワード">
+        <button class="notice-btn" id="pw-btn">認証</button>
+      </div>
+      <form id="post-form" style="display:none;">
+        <input type="text" id="title" placeholder="タイトル" required maxlength="40"><br>
+        <textarea id="body" placeholder="内容" required maxlength="100"></textarea><br>
+        <button type="submit" class="notice-btn">投稿</button>
+      </form>
+      <div id="admin-message"></div>
+    </section>
+  </main>
+  <footer>…</footer>
+  <script>
+    let notices = [];
+    let idx = 0;
+    const view = document.getElementById('notice-view');
+    const prevBtn = document.getElementById('notice-prev');
+    const nextBtn = document.getElementById('notice-next');
+    const countSpan = document.getElementById('notice-count');
+
+    // お知らせ取得
+    fetch('/api/notices')
+      .then(res => res.json())
+      .then(data => {
+        notices = data;
+        showNotice();
+      })
+      .catch(() => {
+        view.innerHTML = 'お知らせの取得に失敗しました。';
+        prevBtn.disabled = true;
+        nextBtn.disabled = true;
+      });
+
+    function showNotice() {
+      if (notices.length === 0) {
+        view.innerHTML = "まだお知らせはありません。";
+        countSpan.textContent = "";
+        prevBtn.disabled = true;
+        nextBtn.disabled = true;
+        return;
+      }
+      const n = notices[idx];
+      view.innerHTML = `<div class="notice-title">${n.title}</div>
+        <div>${n.body}</div>
+        <div class="notice-date">${n.date}</div>`;
+      countSpan.textContent = `${idx + 1} / ${notices.length}`;
+      prevBtn.disabled = idx === 0;
+      nextBtn.disabled = idx === notices.length - 1;
+    }
+    prevBtn.addEventListener('click', () => { if (idx > 0) { idx--; showNotice(); } });
+    nextBtn.addEventListener('click', () => { if (idx < notices.length - 1) { idx++; showNotice(); } });
+
+    // 管理者認証と投稿
+    const pwBtn = document.getElementById('pw-btn');
+    const pwInput = document.getElementById('pw-input');
+    const postForm = document.getElementById('post-form');
+    const adminMsg = document.getElementById('admin-message');
+    let adminOK = false;
+
+    pwBtn.onclick = function(){
+      const pw = pwInput.value;
+      fetch('/api/checkpw', {
+        method: 'POST',
+        headers: {'Content-Type':'application/json'},
+        body: JSON.stringify({pw})
+      }).then(res => res.json()).then(result => {
+        if(result.ok){
+          adminOK = true;
+          document.getElementById('pw-area').style.display = 'none';
+          postForm.style.display = '';
+          adminMsg.textContent = '';
+        }else{
+          adminMsg.textContent = 'パスワードが違います';
+        }
+      });
+    };
+
+    postForm.onsubmit = function(e){
+      e.preventDefault();
+      if(!adminOK) return;
+      const t = document.getElementById('title').value.trim();
+      const b = document.getElementById('body').value.trim();
+      if(t && b){
+        const d = new Date();
+        fetch('/api/notices', {
+          method: 'POST',
+          headers: {'Content-Type':'application/json'},
+          body: JSON.stringify({
+            pass: pwInput.value,
+            title: t,
+            body: b,
+            date: `${d.getFullYear()}/${d.getMonth()+1}/${d.getDate()} ${d.getHours()}:${d.getMinutes().toString().padStart(2,"0")}`
+          })
+        }).then(res=>{
+          if(res.ok){
+            adminMsg.textContent = '投稿しました';
+            document.getElementById('title').value = '';
+            document.getElementById('body').value = '';
+            fetch('/api/notices')
+              .then(res=>res.json()).then(data=>{
+                notices = data; idx = 0; showNotice();
+              });
+          }else{
+            adminMsg.textContent = '投稿失敗（パスワード確認）';
+          }
+        });
+      }
+    }
+  </script>
+</body>
+</html>
