@@ -5,21 +5,132 @@
   <title>いろは よさこいチーム</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <style>
-    .notice-box { background: #ffe39c; border-radius: 16px; margin-bottom: 1.5em; padding: 1em 1.2em; box-shadow: 0 2px 12px #f8c02e44;}
-    .notice-title { font-weight: bold; font-size: 1.13em; margin-bottom:0.2em;}
-    .notice-date { font-size:0.95em; color: #c46000; margin-top:0.15em;}
-    .notice-controls { text-align:center; margin:0.5em 0; }
-    .notice-btn { background: #f47920; color:#fff; border:none; border-radius:7px; padding:0.4em 1em; margin:0 0.7em; }
+    html, body {
+      margin: 0; padding: 0;
+      font-family: 'Yu Gothic', 'Meiryo', sans-serif;
+      background: #fffbe6;
+    }
+    header {
+      background: linear-gradient(90deg, #f47920 0%, #f8c02e 100%);
+      color: #fff;
+      text-align: center;
+      padding: 2em 1em 1em 1em;
+      border-radius: 0 0 30px 30px;
+      box-shadow: 0 2px 12px #e7af3f55;
+      font-size: 1.3em;
+      letter-spacing: 0.05em;
+    }
+    main {
+      max-width: 480px;
+      margin: 2em auto;
+      background: #fff;
+      border-radius: 18px;
+      box-shadow: 0 2px 20px #ffd99660, 0 2px 6px #ffde9922;
+      padding: 1.5em 1em 2em 1em;
+    }
+    section {
+      margin-bottom: 2.3em;
+    }
+    .notice-card {
+      background: #ffe39c;
+      border-radius: 13px;
+      margin-bottom: 0.6em;
+      padding: 1em 1.1em;
+      box-shadow: 0 2px 8px #f8c02e33;
+      min-height: 4em;
+      transition: opacity 0.5s;
+      opacity: 1;
+      position: relative;
+    }
+    .notice-title {
+      font-weight: bold;
+      font-size: 1.11em;
+      margin-bottom: 0.15em;
+    }
+    .notice-date {
+      font-size: 0.93em;
+      color: #b07812;
+      margin-top: 0.2em;
+      text-align: right;
+    }
+    .notice-controls {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 1em;
+      margin-bottom: 0.3em;
+    }
+    .notice-btn, button, input[type=submit] {
+      background: linear-gradient(90deg, #f47920 0%, #f8c02e 100%);
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      padding: 0.55em 1.5em;
+      font-size: 1em;
+      font-weight: bold;
+      box-shadow: 0 1px 4px #f8c02e55;
+      cursor: pointer;
+      transition: background 0.2s, transform 0.1s;
+    }
+    .notice-btn:active, button:active {
+      transform: scale(0.97);
+      background: #f47920;
+    }
+    .notice-btn:disabled {
+      background: #f8c02e77;
+      color: #eee;
+      cursor: not-allowed;
+      opacity: 0.6;
+    }
+    .form-box {
+      margin: 1em 0;
+      padding: 1em 1em 1.5em 1em;
+      background: #fffbe0;
+      border-radius: 13px;
+      box-shadow: 0 2px 7px #ffd99650;
+    }
+    .input-row {
+      margin-bottom: 1em;
+      display: flex;
+      flex-direction: column;
+      gap: 0.3em;
+    }
+    input[type=\"text\"], input[type=\"password\"], textarea {
+      border-radius: 6px;
+      border: 1px solid #f8c02e;
+      padding: 0.5em;
+      font-size: 1em;
+      background: #fff;
+      outline: none;
+      transition: border 0.2s;
+    }
+    input:focus, textarea:focus {
+      border: 1.5px solid #f47920;
+      background: #fffdfa;
+    }
+    textarea { resize: vertical; min-height: 2.4em; }
+    .form-message {
+      color: #d00;
+      font-size: 0.98em;
+      margin: 0.4em 0;
+      min-height: 1.3em;
+      transition: color 0.2s;
+    }
+    @media (max-width: 600px) {
+      main { margin: 0.5em 0.1em; padding: 1em 0.4em 2em 0.4em; }
+      header { padding: 1.2em 0.4em 0.9em 0.4em; font-size: 1em; }
+    }
   </style>
 </head>
 <body>
   <header>
-    <h1>いろは よさこいチーム</h1>
+    <div>いろは よさこいチーム</div>
+    <div style="font-size: 0.8em; font-weight: normal;">宇部市の小学生よさこいチーム公式サイト</div>
   </header>
   <main>
     <section>
       <h2>お知らせ</h2>
-      <div id="notice-view" class="notice-box">読み込み中...</div>
+      <div class="notice-card" id="notice-view">読み込み中...</div>
       <div class="notice-controls">
         <button class="notice-btn" id="notice-prev">前へ</button>
         <span id="notice-count"></span>
@@ -28,67 +139,103 @@
     </section>
     <section>
       <h2>管理者用</h2>
-      <div id="pw-area">
-        <input type="password" id="pw-input" placeholder="管理者パスワード">
-        <button class="notice-btn" id="pw-btn">認証</button>
+      <div id="pw-area" class="form-box">
+        <form id="pw-form">
+          <div class="input-row">
+            <label for="pw-input">管理者パスワード</label>
+            <input type="password" id="pw-input" autocomplete="off" required>
+          </div>
+          <button type="submit" class="notice-btn">認証</button>
+        </form>
+        <div class="form-message" id="pw-message"></div>
       </div>
-      <form id="post-form" style="display:none;">
-        <input type="text" id="title" placeholder="タイトル" required maxlength="40"><br>
-        <textarea id="body" placeholder="内容" required maxlength="100"></textarea><br>
+      <form id="post-form" class="form-box" style="display:none;">
+        <div class="input-row">
+          <label for="title">タイトル</label>
+          <input type="text" id="title" maxlength="40" required autocomplete="off">
+        </div>
+        <div class="input-row">
+          <label for="body">内容</label>
+          <textarea id="body" maxlength="100" required></textarea>
+        </div>
         <button type="submit" class="notice-btn">投稿</button>
+        <div class="form-message" id="admin-message"></div>
       </form>
-      <div id="admin-message"></div>
     </section>
   </main>
-  <footer>…</footer>
+  <footer style="text-align:center; color:#c46000; font-size:0.97em; margin-top:2em;">
+    &copy; 2025 いろは よさこいチーム
+  </footer>
   <script>
+    // お知らせ部分
     let notices = [];
     let idx = 0;
     const view = document.getElementById('notice-view');
     const prevBtn = document.getElementById('notice-prev');
     const nextBtn = document.getElementById('notice-next');
     const countSpan = document.getElementById('notice-count');
+    const fadeDuration = 350;
 
-    // お知らせ取得
-    fetch('/api/notices')
-      .then(res => res.json())
-      .then(data => {
-        notices = data;
-        showNotice();
-      })
-      .catch(() => {
-        view.innerHTML = 'お知らせの取得に失敗しました。';
-        prevBtn.disabled = true;
-        nextBtn.disabled = true;
-      });
+    // フェード切り替え
+    function fadeNotice(newContent) {
+      view.style.opacity = 0;
+      setTimeout(() => {
+        view.innerHTML = newContent;
+        view.style.opacity = 1;
+      }, fadeDuration);
+    }
 
     function showNotice() {
       if (notices.length === 0) {
-        view.innerHTML = "まだお知らせはありません。";
-        countSpan.textContent = "";
+        fadeNotice(\"まだお知らせはありません。\");
+        countSpan.textContent = \"\";
         prevBtn.disabled = true;
         nextBtn.disabled = true;
         return;
       }
       const n = notices[idx];
-      view.innerHTML = `<div class="notice-title">${n.title}</div>
+      fadeNotice(`<div class=\"notice-title\">${n.title}</div>
         <div>${n.body}</div>
-        <div class="notice-date">${n.date}</div>`;
+        <div class=\"notice-date\">${n.date}</div>`);
       countSpan.textContent = `${idx + 1} / ${notices.length}`;
       prevBtn.disabled = idx === 0;
       nextBtn.disabled = idx === notices.length - 1;
     }
+
     prevBtn.addEventListener('click', () => { if (idx > 0) { idx--; showNotice(); } });
     nextBtn.addEventListener('click', () => { if (idx < notices.length - 1) { idx++; showNotice(); } });
 
-    // 管理者認証と投稿
-    const pwBtn = document.getElementById('pw-btn');
+    // 初回お知らせ読み込み
+    function loadNotices() {
+      view.innerHTML = \"読み込み中...\";
+      fetch('/api/notices')
+        .then(res => res.json())
+        .then(data => {
+          notices = data;
+          idx = 0;
+          showNotice();
+        })
+        .catch(() => {
+          fadeNotice('お知らせの取得に失敗しました。');
+          prevBtn.disabled = true;
+          nextBtn.disabled = true;
+        });
+    }
+    loadNotices();
+
+    // 管理者認証部分
+    const pwForm = document.getElementById('pw-form');
     const pwInput = document.getElementById('pw-input');
+    const pwArea = document.getElementById('pw-area');
+    const pwMsg = document.getElementById('pw-message');
     const postForm = document.getElementById('post-form');
     const adminMsg = document.getElementById('admin-message');
     let adminOK = false;
+    let adminPW = '';
 
-    pwBtn.onclick = function(){
+    pwForm.onsubmit = function(e) {
+      e.preventDefault();
+      pwMsg.textContent = \"認証中...\";
       const pw = pwInput.value;
       fetch('/api/checkpw', {
         method: 'POST',
@@ -97,45 +244,55 @@
       }).then(res => res.json()).then(result => {
         if(result.ok){
           adminOK = true;
-          document.getElementById('pw-area').style.display = 'none';
+          adminPW = pw;
+          pwArea.style.display = 'none';
           postForm.style.display = '';
-          adminMsg.textContent = '';
+          pwMsg.textContent = '';
         }else{
-          adminMsg.textContent = 'パスワードが違います';
+          pwMsg.textContent = 'パスワードが違います';
+          pwInput.value = '';
         }
+      }).catch(()=>{
+        pwMsg.textContent = 'ネットワークエラー';
       });
     };
 
+    // 投稿部分
     postForm.onsubmit = function(e){
       e.preventDefault();
       if(!adminOK) return;
       const t = document.getElementById('title').value.trim();
       const b = document.getElementById('body').value.trim();
-      if(t && b){
-        const d = new Date();
-        fetch('/api/notices', {
-          method: 'POST',
-          headers: {'Content-Type':'application/json'},
-          body: JSON.stringify({
-            pass: pwInput.value,
-            title: t,
-            body: b,
-            date: `${d.getFullYear()}/${d.getMonth()+1}/${d.getDate()} ${d.getHours()}:${d.getMinutes().toString().padStart(2,"0")}`
-          })
-        }).then(res=>{
-          if(res.ok){
-            adminMsg.textContent = '投稿しました';
-            document.getElementById('title').value = '';
-            document.getElementById('body').value = '';
-            fetch('/api/notices')
-              .then(res=>res.json()).then(data=>{
-                notices = data; idx = 0; showNotice();
-              });
-          }else{
-            adminMsg.textContent = '投稿失敗（パスワード確認）';
-          }
-        });
+      if(t === '' || b === ''){
+        adminMsg.textContent = 'すべて入力してください';
+        return;
       }
+      adminMsg.textContent = '送信中...';
+      const d = new Date();
+      fetch('/api/notices', {
+        method: 'POST',
+        headers: {'Content-Type':'application/json'},
+        body: JSON.stringify({
+          pass: adminPW,
+          title: t,
+          body: b,
+          date: `${d.getFullYear()}/${d.getMonth()+1}/${d.getDate()} ${d.getHours()}:${d.getMinutes().toString().padStart(2,\"0\")}`
+        })
+      }).then(res=>{
+        if(res.ok){
+          adminMsg.style.color = '#0a0';
+          adminMsg.textContent = '投稿しました';
+          document.getElementById('title').value = '';
+          document.getElementById('body').value = '';
+          loadNotices();
+          setTimeout(()=>{ adminMsg.textContent = ''; adminMsg.style.color='#d00'; }, 1500);
+        }else{
+          adminMsg.style.color = '#d00';
+          adminMsg.textContent = '投稿失敗（パスワード確認）';
+        }
+      }).catch(()=>{
+        adminMsg.textContent = 'ネットワークエラー';
+      });
     }
   </script>
 </body>
