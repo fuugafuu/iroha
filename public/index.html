@@ -5,127 +5,163 @@
   <title>いろは よさこいチーム</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <style>
-    html, body {
+    body {
       margin: 0; padding: 0;
       font-family: 'Yu Gothic', 'Meiryo', sans-serif;
-      background: #fffbe6;
+      background: #fdf6ec;
     }
     header {
-      background: linear-gradient(90deg, #f47920 0%, #f8c02e 100%);
+      background: linear-gradient(90deg, #ff965a 0%, #ffdd57 100%);
       color: #fff;
       text-align: center;
-      padding: 2em 1em 1em 1em;
-      border-radius: 0 0 30px 30px;
-      box-shadow: 0 2px 12px #e7af3f55;
-      font-size: 1.3em;
-      letter-spacing: 0.05em;
+      padding: 2.2em 1em 1.1em 1em;
+      border-radius: 0 0 38px 38px;
+      box-shadow: 0 3px 14px #f8c02e55;
+      font-size: 1.4em;
+      letter-spacing: 0.07em;
+      font-weight: bold;
     }
     main {
-      max-width: 480px;
+      max-width: 520px;
       margin: 2em auto;
       background: #fff;
-      border-radius: 18px;
-      box-shadow: 0 2px 20px #ffd99660, 0 2px 6px #ffde9922;
-      padding: 1.5em 1em 2em 1em;
+      border-radius: 22px;
+      box-shadow: 0 6px 24px #ffd99680, 0 1px 4px #ffde9925;
+      padding: 1.7em 1.3em 2.3em 1.3em;
     }
-    section {
-      margin-bottom: 2.3em;
+    h2 {
+      font-size: 1.19em;
+      letter-spacing: 0.04em;
+      color: #d87026;
+      border-left: 6px solid #ffd36a;
+      padding-left: 0.6em;
+      margin: 2.2em 0 1em 0;
     }
     .notice-card {
-      background: #ffe39c;
-      border-radius: 13px;
-      margin-bottom: 0.6em;
-      padding: 1em 1.1em;
-      box-shadow: 0 2px 8px #f8c02e33;
+      background: linear-gradient(92deg,#fff3c8 60%,#fff7e2 100%);
+      border-radius: 14px;
+      margin-bottom: 0.9em;
+      padding: 1.1em 1.3em;
+      box-shadow: 0 4px 16px #ffd99655;
       min-height: 4em;
-      transition: opacity 0.5s;
-      opacity: 1;
       position: relative;
+      border: 1.7px solid #ffcd84;
+      transition: box-shadow 0.2s, border 0.2s;
+      animation: fadein 0.6s;
     }
+    @keyframes fadein { from { opacity: 0; transform:translateY(16px);} to { opacity: 1; transform:none;} }
     .notice-title {
       font-weight: bold;
-      font-size: 1.11em;
-      margin-bottom: 0.15em;
+      font-size: 1.14em;
+      color: #c66509;
+      margin-bottom: 0.18em;
+      letter-spacing: 0.02em;
+      text-shadow: 0 1px 2px #fff9;
     }
     .notice-date {
-      font-size: 0.93em;
-      color: #b07812;
-      margin-top: 0.2em;
+      font-size: 0.97em;
+      color: #9e7605;
+      margin-top: 0.25em;
       text-align: right;
+      opacity: 0.8;
     }
     .notice-controls {
       display: flex;
       justify-content: center;
       align-items: center;
-      gap: 1em;
+      gap: 1.1em;
       margin-bottom: 0.3em;
+      margin-top: 1.3em;
     }
     .notice-btn, button, input[type=submit] {
-      background: linear-gradient(90deg, #f47920 0%, #f8c02e 100%);
+      background: linear-gradient(90deg, #ff965a 10%, #ffd36a 100%);
       color: #fff;
       border: none;
-      border-radius: 8px;
-      padding: 0.55em 1.5em;
+      border-radius: 9px;
+      padding: 0.62em 2.0em;
       font-size: 1em;
       font-weight: bold;
-      box-shadow: 0 1px 4px #f8c02e55;
+      box-shadow: 0 1px 4px #ffc65e60;
       cursor: pointer;
-      transition: background 0.2s, transform 0.1s;
+      outline: none;
+      transition: background 0.22s, color 0.14s, transform 0.08s, box-shadow 0.13s;
+      border-bottom: 3.5px solid #e78724;
+      letter-spacing: 0.03em;
+    }
+    .notice-btn:hover, button:hover, input[type=submit]:hover {
+      background: linear-gradient(93deg, #ffbb73 0%, #ffe07c 100%);
+      color: #d87026;
+      transform: translateY(-2px) scale(1.04);
+      box-shadow: 0 2px 12px #ffd36a70;
     }
     .notice-btn:active, button:active {
+      background: #ff965a;
+      color: #fff;
       transform: scale(0.97);
-      background: #f47920;
+      border-bottom: 1.5px solid #d87026;
     }
     .notice-btn:disabled {
       background: #f8c02e77;
       color: #eee;
       cursor: not-allowed;
-      opacity: 0.6;
+      opacity: 0.63;
+      border-bottom: 2px solid #ffc65e;
     }
     .form-box {
-      margin: 1em 0;
-      padding: 1em 1em 1.5em 1em;
-      background: #fffbe0;
-      border-radius: 13px;
-      box-shadow: 0 2px 7px #ffd99650;
+      margin: 1.2em 0;
+      padding: 1.1em 1.2em 1.4em 1.2em;
+      background: #fffbe8;
+      border-radius: 14px;
+      box-shadow: 0 3px 10px #ffd99644;
+      border: 1px solid #ffe5a9;
+      animation: fadein 0.5s;
     }
     .input-row {
-      margin-bottom: 1em;
+      margin-bottom: 1.15em;
       display: flex;
       flex-direction: column;
       gap: 0.3em;
     }
-    input[type=\"text\"], input[type=\"password\"], textarea {
-      border-radius: 6px;
-      border: 1px solid #f8c02e;
-      padding: 0.5em;
-      font-size: 1em;
-      background: #fff;
+    label {
+      color: #b07a21;
+      font-size: 0.97em;
+      margin-bottom: 0.1em;
+      font-weight: bold;
+    }
+    input[type="text"], input[type="password"], textarea {
+      border-radius: 7px;
+      border: 1.7px solid #ffd36a;
+      padding: 0.56em;
+      font-size: 1.04em;
+      background: #fffdf7;
       outline: none;
-      transition: border 0.2s;
+      box-shadow: 0 1px 6px #fff3c880;
+      transition: border 0.16s, box-shadow 0.19s;
     }
     input:focus, textarea:focus {
-      border: 1.5px solid #f47920;
-      background: #fffdfa;
+      border: 1.9px solid #ff965a;
+      background: #fff9ee;
+      box-shadow: 0 0 8px #ffe07c70;
     }
-    textarea { resize: vertical; min-height: 2.4em; }
+    textarea { resize: vertical; min-height: 2.6em; }
     .form-message {
       color: #d00;
-      font-size: 0.98em;
-      margin: 0.4em 0;
+      font-size: 0.99em;
+      margin: 0.53em 0 0.2em 0;
       min-height: 1.3em;
       transition: color 0.2s;
+      letter-spacing: 0.02em;
     }
     @media (max-width: 600px) {
-      main { margin: 0.5em 0.1em; padding: 1em 0.4em 2em 0.4em; }
-      header { padding: 1.2em 0.4em 0.9em 0.4em; font-size: 1em; }
+      main { margin: 0.3em 0.02em; padding: 1em 0.1em 1.8em 0.1em; }
+      header { padding: 1.1em 0.2em 0.8em 0.2em; font-size: 1em; }
     }
   </style>
 </head>
 <body>
   <header>
-    <div>いろは よさこいチーム</div>
-    <div style="font-size: 0.8em; font-weight: normal;">宇部市の小学生よさこいチーム公式サイト</div>
+    いろは よさこいチーム
+    <div style="font-size: 0.82em; font-weight: normal;">宇部市の小学生よさこいチーム公式サイト</div>
   </header>
   <main>
     <section>
@@ -163,7 +199,7 @@
       </form>
     </section>
   </main>
-  <footer style="text-align:center; color:#c46000; font-size:0.97em; margin-top:2em;">
+  <footer style="text-align:center; color:#c46000; font-size:0.97em; margin-top:2.2em;">
     &copy; 2025 いろは よさこいチーム
   </footer>
   <script>
@@ -174,40 +210,28 @@
     const prevBtn = document.getElementById('notice-prev');
     const nextBtn = document.getElementById('notice-next');
     const countSpan = document.getElementById('notice-count');
-    const fadeDuration = 350;
-
-    // フェード切り替え
-    function fadeNotice(newContent) {
-      view.style.opacity = 0;
-      setTimeout(() => {
-        view.innerHTML = newContent;
-        view.style.opacity = 1;
-      }, fadeDuration);
-    }
 
     function showNotice() {
       if (notices.length === 0) {
-        fadeNotice(\"まだお知らせはありません。\");
-        countSpan.textContent = \"\";
+        view.innerHTML = "まだお知らせはありません。";
+        countSpan.textContent = "";
         prevBtn.disabled = true;
         nextBtn.disabled = true;
         return;
       }
       const n = notices[idx];
-      fadeNotice(`<div class=\"notice-title\">${n.title}</div>
+      view.innerHTML = `<div class="notice-title">${n.title}</div>
         <div>${n.body}</div>
-        <div class=\"notice-date\">${n.date}</div>`);
+        <div class="notice-date">${n.date}</div>`;
       countSpan.textContent = `${idx + 1} / ${notices.length}`;
       prevBtn.disabled = idx === 0;
       nextBtn.disabled = idx === notices.length - 1;
     }
-
     prevBtn.addEventListener('click', () => { if (idx > 0) { idx--; showNotice(); } });
     nextBtn.addEventListener('click', () => { if (idx < notices.length - 1) { idx++; showNotice(); } });
 
-    // 初回お知らせ読み込み
     function loadNotices() {
-      view.innerHTML = \"読み込み中...\";
+      view.innerHTML = "読み込み中...";
       fetch('/api/notices')
         .then(res => res.json())
         .then(data => {
@@ -216,7 +240,7 @@
           showNotice();
         })
         .catch(() => {
-          fadeNotice('お知らせの取得に失敗しました。');
+          view.innerHTML = 'お知らせの取得に失敗しました。';
           prevBtn.disabled = true;
           nextBtn.disabled = true;
         });
@@ -235,7 +259,7 @@
 
     pwForm.onsubmit = function(e) {
       e.preventDefault();
-      pwMsg.textContent = \"認証中...\";
+      pwMsg.textContent = "認証中...";
       const pw = pwInput.value;
       fetch('/api/checkpw', {
         method: 'POST',
@@ -276,7 +300,7 @@
           pass: adminPW,
           title: t,
           body: b,
-          date: `${d.getFullYear()}/${d.getMonth()+1}/${d.getDate()} ${d.getHours()}:${d.getMinutes().toString().padStart(2,\"0\")}`
+          date: `${d.getFullYear()}/${d.getMonth()+1}/${d.getDate()} ${d.getHours()}:${d.getMinutes().toString().padStart(2,"0")}`
         })
       }).then(res=>{
         if(res.ok){
@@ -285,7 +309,7 @@
           document.getElementById('title').value = '';
           document.getElementById('body').value = '';
           loadNotices();
-          setTimeout(()=>{ adminMsg.textContent = ''; adminMsg.style.color='#d00'; }, 1500);
+          setTimeout(()=>{ adminMsg.textContent = ''; adminMsg.style.color='#d00'; }, 1700);
         }else{
           adminMsg.style.color = '#d00';
           adminMsg.textContent = '投稿失敗（パスワード確認）';
